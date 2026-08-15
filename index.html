@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Python Quest: Misi Struktur Arahan</title>
+<style>
+:root{
+  --bg:#0b1020; --card:#151c33; --card2:#1d2746; --text:#f7f9ff;
+  --muted:#b9c2df; --accent:#7ee787; --accent2:#7aa2ff; --danger:#ff7b72;
+  --gold:#ffd166; --line:#2d3a65;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:radial-gradient(circle at top,#1b2550 0,#0b1020 45%,#070a13 100%);
+  color:var(--text);min-height:100vh;
+}
+.wrap{max-width:980px;margin:auto;padding:22px}
+.top{
+  display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px
+}
+.brand{font-weight:900;font-size:clamp(22px,4vw,38px);letter-spacing:.3px}
+.brand span{color:var(--accent)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.pill{background:#11182d;border:1px solid var(--line);padding:9px 13px;border-radius:999px;font-weight:800}
+.card{
+  background:linear-gradient(180deg,rgba(29,39,70,.96),rgba(18,25,47,.96));
+  border:1px solid var(--line);border-radius:22px;padding:clamp(18px,4vw,34px);
+  box-shadow:0 24px 70px rgba(0,0,0,.38)
+}
+.hero{text-align:center;padding:28px 10px}
+.hero h1{font-size:clamp(30px,6vw,58px);margin:.2em 0}
+.hero p{color:var(--muted);font-size:clamp(16px,2.4vw,20px);line-height:1.6;max-width:720px;margin:0 auto 22px}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:24px}
+.badge{border:1px solid var(--line);background:#10182d;color:#dce4ff;padding:7px 10px;border-radius:10px;font-size:14px}
+button{
+  border:0;border-radius:14px;padding:13px 18px;font-weight:900;font-size:16px;cursor:pointer;
+  transition:.18s transform,.18s opacity,.18s filter
+}
+button:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.primary{background:linear-gradient(90deg,var(--accent2),#9b8cff);color:white}
+.secondary{background:#26345f;color:white;border:1px solid #3a4e8c}
+.progress{height:11px;background:#0b1020;border-radius:99px;overflow:hidden;border:1px solid var(--line);margin-bottom:24px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));transition:.35s}
+.kicker{color:var(--accent);font-weight:900;text-transform:uppercase;letter-spacing:1.2px;font-size:13px}
+h2{font-size:clamp(23px,4vw,34px);line-height:1.2;margin:.35em 0 .7em}
+.code{
+  white-space:pre-wrap;background:#080d1a;border:1px solid #2b3760;padding:16px;border-radius:14px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(14px,2vw,17px);
+  line-height:1.55;color:#e9efff;margin:14px 0 18px;overflow:auto
+}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.option{
+  width:100%;text-align:left;background:#111a31;color:#f4f6ff;border:1px solid #32416f;
+  min-height:64px;display:flex;align-items:center;gap:11px
+}
+.option .letter{
+  width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#26345f;flex:0 0 auto
+}
+.option.correct{background:rgba(46,160,67,.2);border-color:#43c65e}
+.option.wrong{background:rgba(248,81,73,.18);border-color:#ff7b72}
+.feedback{
+  display:none;margin-top:18px;padding:15px 16px;border-radius:14px;line-height:1.55;border:1px solid var(--line)
+}
+.feedback.good{display:block;background:rgba(46,160,67,.14);border-color:#43c65e}
+.feedback.bad{display:block;background:rgba(248,81,73,.12);border-color:#ff7b72}
+.feedback strong{display:block;margin-bottom:4px}
+.actions{display:flex;justify-content:flex-end;margin-top:18px}
+.tiny{color:var(--muted);font-size:13px;margin-top:10px}
+.center{text-align:center}
+.bigscore{font-size:64px;font-weight:1000;margin:10px 0;color:var(--gold)}
+.rank{font-size:24px;font-weight:900;margin-bottom:10px}
+.review{margin-top:20px;text-align:left}
+.review-item{border-top:1px solid var(--line);padding:14px 0;color:#dfe6ff}
+.hidden{display:none!important}
+footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
+@media(max-width:700px){.options{grid-template-columns:1fr}.wrap{padding:12px}.card{border-radius:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">🐍 <span>Python Quest</span> — Struktur Arahan</div>
+    <div class="stats hidden" id="stats">
+      <div class="pill">⭐ <span id="score">0</span></div>
+      <div class="pill">🔥 <span id="streak">0</span></div>
+      <div class="pill">❤️ <span id="lives">3</span></div>
+    </div>
+  </div>
+
+  <section class="card" id="start">
+    <div class="hero">
+      <div class="kicker">ASK Tingkatan 2 • Tahap Sederhana</div>
+      <h1>Misi Selamatkan <span style="color:#7ee787">Python City!</span></h1>
+      <p>Sistem Python City rosak. Untuk memulihkannya, kamu perlu menewaskan 10 cabaran struktur arahan. Baca kod, ramal output dan pilih arahan yang betul.</p>
+      <div class="badges">
+        <span class="badge">Urutan</span><span class="badge">if / else</span><span class="badge">for</span>
+        <span class="badge">while</span><span class="badge">Operator</span><span class="badge">Ramalan output</span>
+      </div>
+      <button class="primary" onclick="startGame()">▶ MULA MISI</button>
+      <div class="tiny">10 soalan dipilih secara rawak • 3 nyawa • penerangan setiap jawapan</div>
+    </div>
+  </section>
+
+  <section class="card hidden" id="game">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="kicker" id="mission">Misi 1 / 10</div>
+    <h2 id="question"></h2>
+    <div class="code hidden" id="code"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="actions"><button class="secondary hidden" id="nextBtn" onclick="nextQuestion()">Soalan Seterusnya →</button></div>
+  </section>
+
+  <section class="card hidden" id="end">
+    <div class="center">
+      <div class="kicker">Misi Tamat</div>
+      <h2>Keputusan Python Quest</h2>
+      <div class="bigscore" id="finalScore">0/100</div>
+      <div class="rank" id="rank"></div>
+      <p id="message" style="color:var(--muted);max-width:650px;margin:0 auto 16px;line-height:1.6"></p>
+      <button class="primary" onclick="startGame()">↻ Main Semula</button>
+      <div class="review" id="review"></div>
+    </div>
+  </section>
+  <footer>Game pembelajaran kendiri • ASK Tingkatan 2 • Python</footer>
+</div>
+
+<script>
+const bank = [
+{
+q:"Apakah output bagi kod berikut?", code:`nama = "Aina"
+umur = 14
+print(nama)
+print(umur)`,
+opts:["Aina kemudian 14","nama kemudian umur","Aina 14 pada baris yang sama","Ralat"],
+ans:0, exp:"Arahan dilaksanakan mengikut urutan dari atas ke bawah. Dua fungsi print() menghasilkan dua baris output."
+},
+{
+q:"Nilai x ialah 8. Apakah output?", code:`x = 8
+if x > 5:
+    print("A")
+else:
+    print("B")`,
+opts:["A","B","8","Ralat"],
+ans:0, exp:"8 lebih besar daripada 5, jadi syarat if adalah benar dan 'A' dipaparkan."
+},
+{
+q:"Kod manakah yang betul untuk memaparkan 'Lulus' jika markah sekurang-kurangnya 40?", code:"",
+opts:[
+`if markah >= 40:\n    print("Lulus")`,
+`if markah > 40\n    print("Lulus")`,
+`if markah = 40:\n    print("Lulus")`,
+`if markah <= 40:\n    print("Lulus")`
+],
+ans:0, exp:"'>=' bermaksud lebih besar atau sama dengan. Tanda ':' juga wajib selepas syarat if."
+},
+{
+q:"Apakah output?", code:`for i in range(3):
+    print(i)`,
+opts:["0 1 2","1 2 3","0 1 2 3","3 sahaja"],
+ans:0, exp:"range(3) menghasilkan 0, 1 dan 2. Nilai akhir 3 tidak termasuk."
+},
+{
+q:"Berapa kali perkataan 'ASK' dipaparkan?", code:`for i in range(2, 6):
+    print("ASK")`,
+opts:["3 kali","4 kali","5 kali","6 kali"],
+ans:1, exp:"range(2,6) menghasilkan 2, 3, 4, 5 — jadi gelung berlaku 4 kali."
+},
+{
+q:"Apakah output akhir bagi x?", code:`x = 1
+while x < 5:
+    x = x + 1
+print(x)`,
+opts:["4","5","6","Gelung tidak berhenti"],
+ans:1, exp:"x bertambah sehingga syarat x < 5 menjadi palsu. Apabila gelung tamat, x bernilai 5."
+},
+{
+q:"Apakah masalah utama kod ini?", code:`x = 1
+while x < 5:
+    print(x)`,
+opts:["Tiada masalah","Gelung mungkin tidak berhenti","x akan menjadi 5","print() tidak boleh digunakan dalam while"],
+ans:1, exp:"Nilai x tidak pernah berubah. Syarat x < 5 sentiasa benar, menyebabkan gelung tak terhingga."
+},
+{
+q:"Apakah output?", code:`markah = 75
+if markah >= 80:
+    print("A")
+elif markah >= 60:
+    print("B")
+else:
+    print("C")`,
+opts:["A","B","C","75"],
+ans:1, exp:"75 tidak mencapai 80 tetapi mencapai 60, maka blok elif dilaksanakan dan 'B' dipaparkan."
+},
+{
+q:"Pilih operator yang bermaksud 'tidak sama dengan' dalam Python.", code:"",
+opts:["=","==","!=","<>"],
+ans:2, exp:"Operator '!=' digunakan untuk menguji sama ada dua nilai tidak sama."
+},
+{
+q:"Apakah output?", code:`a = 4
+b = 2
+if a > b and b > 0:
+    print("Ya")
+else:
+    print("Tidak")`,
+opts:["Ya","Tidak","True","Ralat"],
+ans:0, exp:"Kedua-dua syarat benar: 4 > 2 dan 2 > 0. Operator 'and' memerlukan kedua-duanya benar."
+},
+{
+q:"Kod manakah paling sesuai untuk mengulang arahan tepat 5 kali?", code:"",
+opts:["if","for","else","input"],
+ans:1, exp:"Gelung for sesuai apabila bilangan ulangan diketahui, contohnya range(5)."
+},
+{
+q:"Apakah output?", code:`for n in range(1, 6, 2):
+    print(n)`,
+opts:["1 2 3 4 5","1 3 5","1 3","2 4 6"],
+ans:1, exp:"range(1,6,2) bermula pada 1 dan meningkat 2 setiap kali: 1, 3, 5."
+},
+{
+q:"Apakah output?", code:`x = 10
+if x % 2 == 0:
+    print("Genap")
+else:
+    print("Ganjil")`,
+opts:["Genap","Ganjil","0","10"],
+ans:0, exp:"10 % 2 menghasilkan baki 0, jadi 10 ialah nombor genap."
+},
+{
+q:"Pilih susunan konsep yang betul.", code:`umur = int(input("Umur: "))
+if umur >= 13:
+    print("Remaja")`,
+opts:[
+"Input → pilihan → output",
+"Output → input → gelung",
+"Gelung → input → pilihan",
+"Pilihan → output → input"
+],
+ans:0, exp:"Program menerima input, membuat pilihan menggunakan if, kemudian menghasilkan output."
+},
+{
+q:"Apakah nilai jumlah selepas gelung tamat?", code:`jumlah = 0
+for i in range(1, 4):
+    jumlah = jumlah + i
+print(jumlah)`,
+opts:["3","4","6","10"],
+ans:2, exp:"Nilai yang ditambah ialah 1 + 2 + 3 = 6."
+},
+{
+q:"Kod manakah menghasilkan 'Betul' hanya apabila x sama dengan 7?", code:"",
+opts:[
+`if x = 7:\n    print("Betul")`,
+`if x == 7:\n    print("Betul")`,
+`if x != 7:\n    print("Betul")`,
+`if x >= 7:\n    print("Betul")`
+],
+ans:1, exp:"Dalam syarat, '==' digunakan untuk membandingkan kesamaan. '=' digunakan untuk memberi nilai kepada pemboleh ubah."
+}
+];
+
+let questions=[], idx=0, score=0, streak=0, lives=3, locked=false, mistakes=[];
+
+function shuffle(arr){
+  let a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function startGame(){
+  questions=shuffle(bank).slice(0,10);
+  idx=0; score=0; streak=0; lives=3; locked=false; mistakes=[];
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("end").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+  document.getElementById("stats").classList.remove("hidden");
+  updateStats(); render();
+}
+function updateStats(){
+  score=Math.max(0,score);
+  document.getElementById("score").textContent=score;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("lives").textContent=lives;
+}
+function render(){
+  locked=false;
+  const q=questions[idx];
+  document.getElementById("mission").textContent=`Misi ${idx+1} / ${questions.length}`;
+  document.getElementById("bar").style.width=`${(idx/questions.length)*100}%`;
+  document.getElementById("question").textContent=q.q;
+  const code=document.getElementById("code");
+  if(q.code){ code.textContent=q.code; code.classList.remove("hidden"); } else code.classList.add("hidden");
+  const opts=document.getElementById("options");
+  opts.innerHTML="";
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.className="option";
+    const letters=["A","B","C","D"];
+    b.innerHTML=`<span class="letter">${letters[i]}</span><span style="white-space:pre-wrap;font-family:${o.includes("\n")?"ui-monospace,monospace":"inherit"}">${escapeHtml(o)}</span>`;
+    b.onclick=()=>choose(i,b);
+    opts.appendChild(b);
+  });
+  const f=document.getElementById("feedback");
+  f.className="feedback"; f.innerHTML="";
+  document.getElementById("nextBtn").classList.add("hidden");
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function choose(choice, btn){
+  if(locked) return;
+  locked=true;
+  const q=questions[idx];
+  const buttons=[...document.querySelectorAll(".option")];
+  buttons[q.ans].classList.add("correct");
+  const f=document.getElementById("feedback");
+  if(choice===q.ans){
+    score += 10 + Math.min(streak*2,6);
+    streak++;
+    f.className="feedback good";
+    f.innerHTML=`<strong>✅ Tepat!</strong>${q.exp}`;
+  }else{
+    btn.classList.add("wrong");
+    lives--; streak=0;
+    mistakes.push({q:q.q, exp:q.exp});
+    f.className="feedback bad";
+    f.innerHTML=`<strong>❌ Belum tepat.</strong>${q.exp}`;
+  }
+  updateStats();
+  document.getElementById("nextBtn").classList.remove("hidden");
+  if(idx===questions.length-1 || lives<=0) document.getElementById("nextBtn").textContent="Lihat Keputusan →";
+  else document.getElementById("nextBtn").textContent="Soalan Seterusnya →";
+}
+function nextQuestion(){
+  if(idx===questions.length-1 || lives<=0){ finish(); return; }
+  idx++; render();
+}
+function finish(){
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("stats").classList.add("hidden");
+  document.getElementById("end").classList.remove("hidden");
+  const answered=idx+1;
+  const baseCorrect = answered - mistakes.length;
+  const percent = Math.round((baseCorrect/answered)*100);
+  document.getElementById("finalScore").textContent=`${percent}/100`;
+  let rank,msg;
+  if(percent>=90){rank="🏆 Python Master";msg="Cemerlang! Kamu sangat kukuh dalam struktur arahan Python."}
+  else if(percent>=70){rank="🥇 Code Ranger";msg="Bagus! Asas kamu kuat. Semak semula soalan yang tersilap untuk naik tahap."}
+  else if(percent>=50){rank="🥈 Logic Explorer";msg="Hampir menguasai. Fokus semula pada syarat if/else dan gelung."}
+  else{rank="🛠️ Python Trainee";msg="Teruskan latihan. Baca kod baris demi baris dan cuba main semula."}
+  document.getElementById("rank").textContent=rank;
+  document.getElementById("message").textContent=msg+` Kamu menjawab ${answered} misi dan mempunyai ${lives} nyawa berbaki.`;
+  document.getElementById("bar").style.width="100%";
+  const rev=document.getElementById("review");
+  if(mistakes.length){
+    rev.innerHTML="<h3>📘 Ulang kaji soalan yang tersilap</h3>"+mistakes.map(m=>`<div class="review-item"><strong>${escapeHtml(m.q)}</strong><br>${escapeHtml(m.exp)}</div>`).join("");
+  }else{
+    rev.innerHTML='<div class="review-item center">✨ Semua jawapan betul. Hebat!</div>';
+  }
+}
+</script>
+</body>
+</html>
