@@ -91,7 +91,6 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
     <div class="stats hidden" id="stats">
       <div class="pill">⭐ <span id="score">0</span></div>
       <div class="pill">🔥 <span id="streak">0</span></div>
-      <div class="pill">❤️ <span id="lives">3</span></div>
     </div>
   </div>
 
@@ -112,7 +111,7 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
         <div class="student-note">Nama dan kelas akan direkodkan bersama keputusan di Google Sheet guru.</div>
       </div>
       <button class="primary" onclick="startGame()">▶ MULA MISI</button>
-      <div class="tiny">10 soalan dipilih secara rawak • 3 nyawa • penerangan setiap jawapan</div>
+      <div class="tiny">10 soalan dipilih secara rawak • penerangan setiap jawapan</div>
     </div>
   </section>
 
@@ -148,7 +147,6 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
     <input type="hidden" name="betul" id="fBetul">
     <input type="hidden" name="salah" id="fSalah">
     <input type="hidden" name="dijawab" id="fDijawab">
-    <input type="hidden" name="nyawa" id="fNyawa">
     <input type="hidden" name="topik_lemah" id="fTopik">
   </form>
   <iframe name="resultFrame" id="resultFrame" class="hidden"></iframe>
@@ -290,7 +288,7 @@ ans:1, exp:"Dalam syarat, '==' digunakan untuk membandingkan kesamaan. '=' digun
 }
 ];
 
-let questions=[], idx=0, score=0, streak=0, lives=3, locked=false, mistakes=[];
+let questions=[], idx=0, score=0, streak=0, locked=false, mistakes=[];
 let studentName="", studentClass="", resultSent=false;
 
 function classifyTopic(q){
@@ -312,7 +310,6 @@ function submitResult(percent, answered, correct){
   document.getElementById("fBetul").value=correct;
   document.getElementById("fSalah").value=answered-correct;
   document.getElementById("fDijawab").value=answered;
-  document.getElementById("fNyawa").value=lives;
   document.getElementById("fTopik").value=topics;
   document.getElementById("resultForm").submit();
   resultSent=true;
@@ -341,7 +338,7 @@ function startGame(){
     return;
   }
   questions=shuffle(bank).slice(0,10);
-  idx=0; score=0; streak=0; lives=3; locked=false; mistakes=[]; resultSent=false;
+  idx=0; score=0; streak=0; locked=false; mistakes=[]; resultSent=false;
   document.getElementById("sendStatus").classList.add("hidden");
   document.getElementById("start").classList.add("hidden");
   document.getElementById("end").classList.add("hidden");
@@ -353,7 +350,6 @@ function updateStats(){
   score=Math.max(0,score);
   document.getElementById("score").textContent=score;
   document.getElementById("streak").textContent=streak;
-  document.getElementById("lives").textContent=lives;
 }
 function render(){
   locked=false;
@@ -392,18 +388,18 @@ function choose(choice, btn){
     f.innerHTML=`<strong>✅ Tepat!</strong>${q.exp}`;
   }else{
     btn.classList.add("wrong");
-    lives--; streak=0;
+    streak=0;
     mistakes.push({q:q.q, exp:q.exp, topic:classifyTopic(q)});
     f.className="feedback bad";
     f.innerHTML=`<strong>❌ Belum tepat.</strong>${q.exp}`;
   }
   updateStats();
   document.getElementById("nextBtn").classList.remove("hidden");
-  if(idx===questions.length-1 || lives<=0) document.getElementById("nextBtn").textContent="Lihat Keputusan →";
+  if(idx===questions.length-1) document.getElementById("nextBtn").textContent="Lihat Keputusan →";
   else document.getElementById("nextBtn").textContent="Soalan Seterusnya →";
 }
 function nextQuestion(){
-  if(idx===questions.length-1 || lives<=0){ finish(); return; }
+  if(idx===questions.length-1){ finish(); return; }
   idx++; render();
 }
 function finish(){
@@ -420,7 +416,7 @@ function finish(){
   else if(percent>=50){rank="🥈 Logic Explorer";msg="Hampir menguasai. Fokus semula pada syarat if/else dan gelung."}
   else{rank="🛠️ Python Trainee";msg="Teruskan latihan. Baca kod baris demi baris dan cuba main semula."}
   document.getElementById("rank").textContent=rank;
-  document.getElementById("message").textContent=msg+` Kamu menjawab ${answered} misi dan mempunyai ${lives} nyawa berbaki.`;
+  document.getElementById("message").textContent=msg+` Kamu telah menjawab ${answered} misi.`;
   document.getElementById("studentResultName").textContent=studentName;
   document.getElementById("studentResultClass").textContent=studentClass;
   document.getElementById("bar").style.width="100%";
