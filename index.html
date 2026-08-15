@@ -74,6 +74,12 @@ h2{font-size:clamp(23px,4vw,34px);line-height:1.2;margin:.35em 0 .7em}
 .review{margin-top:20px;text-align:left}
 .review-item{border-top:1px solid var(--line);padding:14px 0;color:#dfe6ff}
 .hidden{display:none!important}
+label{display:block;text-align:left;font-weight:800;margin:10px 0 6px}
+.student-form{max-width:560px;margin:18px auto 22px;padding:17px;background:#10182d;border:1px solid var(--line);border-radius:16px;text-align:left}
+.student-form input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #3a4e8c;background:#0b1020;color:white;font-size:16px;outline:none}
+.student-form input:focus{border-color:var(--accent2)}
+.student-note{color:var(--muted);font-size:13px;margin-top:8px;text-align:center}
+.sendstatus{margin:14px auto 0;max-width:620px;padding:12px 14px;border-radius:12px;background:rgba(46,160,67,.14);border:1px solid #43c65e;font-weight:800}
 footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
 @media(max-width:700px){.options{grid-template-columns:1fr}.wrap{padding:12px}.card{border-radius:17px}}
 </style>
@@ -98,6 +104,13 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
         <span class="badge">Urutan</span><span class="badge">if / else</span><span class="badge">for</span>
         <span class="badge">while</span><span class="badge">Operator</span><span class="badge">Ramalan output</span>
       </div>
+      <div class="student-form">
+        <label for="studentName">Nama penuh murid</label>
+        <input id="studentName" type="text" autocomplete="name" placeholder="Contoh: Nur Aisyah Binti Ahmad">
+        <label for="studentClass">Kelas</label>
+        <input id="studentClass" type="text" placeholder="Contoh: 2 Brevity">
+        <div class="student-note">Nama dan kelas akan direkodkan bersama keputusan di Google Sheet guru.</div>
+      </div>
       <button class="primary" onclick="startGame()">▶ MULA MISI</button>
       <div class="tiny">10 soalan dipilih secara rawak • 3 nyawa • penerangan setiap jawapan</div>
     </div>
@@ -117,13 +130,29 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
     <div class="center">
       <div class="kicker">Misi Tamat</div>
       <h2>Keputusan Python Quest</h2>
+      <div id="studentResultName" style="font-weight:900;color:var(--accent);margin-bottom:6px"></div>
+      <div id="studentResultClass" style="color:var(--muted);margin-bottom:8px"></div>
       <div class="bigscore" id="finalScore">0/100</div>
       <div class="rank" id="rank"></div>
       <p id="message" style="color:var(--muted);max-width:650px;margin:0 auto 16px;line-height:1.6"></p>
-      <button class="primary" onclick="startGame()">↻ Main Semula</button>
+      <div id="sendStatus" class="sendstatus hidden">📤 Keputusan telah dihantar kepada guru.</div>
+      <button class="primary" onclick="restartGame()">↻ Main Semula</button>
       <div class="review" id="review"></div>
     </div>
   </section>
+
+  <form id="resultForm" method="POST" action="https://script.google.com/macros/s/AKfycbwS-q7w8Rb-2-Uiz374tFvc4lT2bMZUPulPCT3SEtTbZr3fwhOYPgAV8BB-g9fjryWVYw/exec" target="resultFrame" class="hidden">
+    <input type="hidden" name="nama" id="fNama">
+    <input type="hidden" name="kelas" id="fKelas">
+    <input type="hidden" name="markah" id="fMarkah">
+    <input type="hidden" name="betul" id="fBetul">
+    <input type="hidden" name="salah" id="fSalah">
+    <input type="hidden" name="dijawab" id="fDijawab">
+    <input type="hidden" name="nyawa" id="fNyawa">
+    <input type="hidden" name="topik_lemah" id="fTopik">
+  </form>
+  <iframe name="resultFrame" id="resultFrame" class="hidden"></iframe>
+
   <footer>Game pembelajaran kendiri • ASK Tingkatan 2 • Python</footer>
 </div>
 
@@ -262,6 +291,39 @@ ans:1, exp:"Dalam syarat, '==' digunakan untuk membandingkan kesamaan. '=' digun
 ];
 
 let questions=[], idx=0, score=0, streak=0, lives=3, locked=false, mistakes=[];
+let studentName="", studentClass="", resultSent=false;
+
+function classifyTopic(q){
+  const t=(q.q+" "+(q.code||"")).toLowerCase();
+  if(t.includes("while")) return "while";
+  if(t.includes("for ") || t.includes("range(")) return "for";
+  if(t.includes("elif")) return "if / elif / else";
+  if(t.includes("if ") || t.includes("syarat")) return "if / else";
+  if(t.includes("operator") || t.includes("!=") || t.includes("==") || t.includes("%") || t.includes(" and ")) return "Operator";
+  return "Urutan / asas";
+}
+
+function submitResult(percent, answered, correct){
+  if(resultSent) return;
+  const topics=[...new Set(mistakes.map(m=>m.topic))].join(", ") || "Tiada";
+  document.getElementById("fNama").value=studentName;
+  document.getElementById("fKelas").value=studentClass;
+  document.getElementById("fMarkah").value=percent;
+  document.getElementById("fBetul").value=correct;
+  document.getElementById("fSalah").value=answered-correct;
+  document.getElementById("fDijawab").value=answered;
+  document.getElementById("fNyawa").value=lives;
+  document.getElementById("fTopik").value=topics;
+  document.getElementById("resultForm").submit();
+  resultSent=true;
+  document.getElementById("sendStatus").classList.remove("hidden");
+}
+
+function restartGame(){
+  document.getElementById("end").classList.add("hidden");
+  document.getElementById("start").classList.remove("hidden");
+  document.getElementById("studentName").focus();
+}
 
 function shuffle(arr){
   let a=[...arr];
@@ -272,8 +334,15 @@ function shuffle(arr){
   return a;
 }
 function startGame(){
+  studentName=document.getElementById("studentName").value.trim();
+  studentClass=document.getElementById("studentClass").value.trim();
+  if(!studentName || !studentClass){
+    alert("Sila isi nama penuh dan kelas sebelum memulakan game.");
+    return;
+  }
   questions=shuffle(bank).slice(0,10);
-  idx=0; score=0; streak=0; lives=3; locked=false; mistakes=[];
+  idx=0; score=0; streak=0; lives=3; locked=false; mistakes=[]; resultSent=false;
+  document.getElementById("sendStatus").classList.add("hidden");
   document.getElementById("start").classList.add("hidden");
   document.getElementById("end").classList.add("hidden");
   document.getElementById("game").classList.remove("hidden");
@@ -324,7 +393,7 @@ function choose(choice, btn){
   }else{
     btn.classList.add("wrong");
     lives--; streak=0;
-    mistakes.push({q:q.q, exp:q.exp});
+    mistakes.push({q:q.q, exp:q.exp, topic:classifyTopic(q)});
     f.className="feedback bad";
     f.innerHTML=`<strong>❌ Belum tepat.</strong>${q.exp}`;
   }
@@ -352,7 +421,10 @@ function finish(){
   else{rank="🛠️ Python Trainee";msg="Teruskan latihan. Baca kod baris demi baris dan cuba main semula."}
   document.getElementById("rank").textContent=rank;
   document.getElementById("message").textContent=msg+` Kamu menjawab ${answered} misi dan mempunyai ${lives} nyawa berbaki.`;
+  document.getElementById("studentResultName").textContent=studentName;
+  document.getElementById("studentResultClass").textContent=studentClass;
   document.getElementById("bar").style.width="100%";
+  submitResult(percent, answered, baseCorrect);
   const rev=document.getElementById("review");
   if(mistakes.length){
     rev.innerHTML="<h3>📘 Ulang kaji soalan yang tersilap</h3>"+mistakes.map(m=>`<div class="review-item"><strong>${escapeHtml(m.q)}</strong><br>${escapeHtml(m.exp)}</div>`).join("");
