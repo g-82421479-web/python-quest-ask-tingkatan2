@@ -76,8 +76,8 @@ h2{font-size:clamp(23px,4vw,34px);line-height:1.2;margin:.35em 0 .7em}
 .hidden{display:none!important}
 label{display:block;text-align:left;font-weight:800;margin:10px 0 6px}
 .student-form{max-width:560px;margin:18px auto 22px;padding:17px;background:#10182d;border:1px solid var(--line);border-radius:16px;text-align:left}
-.student-form input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #3a4e8c;background:#0b1020;color:white;font-size:16px;outline:none}
-.student-form input:focus{border-color:var(--accent2)}
+.student-form input,.student-form select{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #3a4e8c;background:#0b1020;color:white;font-size:16px;outline:none}
+.student-form input:focus,.student-form select:focus{border-color:var(--accent2)}
 .student-note{color:var(--muted);font-size:13px;margin-top:8px;text-align:center}
 .sendstatus{margin:14px auto 0;max-width:620px;padding:12px 14px;border-radius:12px;background:rgba(46,160,67,.14);border:1px solid #43c65e;font-weight:800}
 footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
@@ -107,8 +107,14 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
         <label for="studentName">Nama penuh murid</label>
         <input id="studentName" type="text" autocomplete="name" placeholder="Contoh: Nur Aisyah Binti Ahmad">
         <label for="studentClass">Kelas</label>
-        <input id="studentClass" type="text" placeholder="Contoh: 2 Brevity">
-        <div class="student-note">Nama dan kelas akan direkodkan bersama keputusan di Google Sheet guru.</div>
+        <select id="studentClass">
+          <option value="" selected disabled>-- Pilih kelas --</option>
+          <option value="2 AL QUDS">2 AL QUDS</option>
+          <option value="2 AN NUR">2 AN NUR</option>
+          <option value="2 BRAINIACS">2 BRAINIACS</option>
+          <option value="2 BREVITY">2 BREVITY</option>
+        </select>
+        <div class="student-note">Pilih kelas daripada senarai. Nama dan kelas akan direkodkan bersama keputusan di Google Sheet guru.</div>
       </div>
       <button class="primary" onclick="startGame()">▶ MULA MISI</button>
       <div class="tiny">10 soalan dipilih secara rawak • penerangan setiap jawapan</div>
