@@ -163,134 +163,347 @@ footer{text-align:center;color:#7e89aa;font-size:12px;padding:18px 0 4px}
 <script>
 const bank = [
 {
-q:"Apakah output bagi kod berikut?", code:`nama = "Aina"
+topic:"Urutan / asas",
+q:"Apakah output bagi kod berikut?", code:"nama = \"Aina\"
 umur = 14
 print(nama)
-print(umur)`,
-opts:["Aina kemudian 14","nama kemudian umur","Aina 14 pada baris yang sama","Ralat"],
+print(umur)",
+opts:["Aina kemudian 14", "nama kemudian umur", "Aina 14 pada baris yang sama", "Ralat"],
 ans:0, exp:"Arahan dilaksanakan mengikut urutan dari atas ke bawah. Dua fungsi print() menghasilkan dua baris output."
 },
 {
-q:"Nilai x ialah 8. Apakah output?", code:`x = 8
-if x > 5:
-    print("A")
-else:
-    print("B")`,
-opts:["A","B","8","Ralat"],
-ans:0, exp:"8 lebih besar daripada 5, jadi syarat if adalah benar dan 'A' dipaparkan."
+topic:"Urutan / asas",
+q:"Apakah output?", code:"x = 3
+y = 5
+z = x + y
+print(z)",
+opts:["3", "5", "8", "15"],
+ans:2, exp:"Nilai z ialah 3 + 5, jadi output ialah 8."
 },
 {
-q:"Kod manakah yang betul untuk memaparkan 'Lulus' jika markah sekurang-kurangnya 40?", code:"",
-opts:[
-`if markah >= 40:\n    print("Lulus")`,
-`if markah > 40\n    print("Lulus")`,
-`if markah = 40:\n    print("Lulus")`,
-`if markah <= 40:\n    print("Lulus")`
-],
-ans:0, exp:"'>=' bermaksud lebih besar atau sama dengan. Tanda ':' juga wajib selepas syarat if."
+topic:"Urutan / asas",
+q:"Apakah nilai akhir bagi pemboleh ubah x?", code:"x = 4
+x = x + 3
+x = x * 2
+print(x)",
+opts:["7", "8", "14", "16"],
+ans:2, exp:"Mula-mula x=4, kemudian x=7, akhirnya x=14."
 },
 {
-q:"Apakah output?", code:`for i in range(3):
-    print(i)`,
-opts:["0 1 2","1 2 3","0 1 2 3","3 sahaja"],
-ans:0, exp:"range(3) menghasilkan 0, 1 dan 2. Nilai akhir 3 tidak termasuk."
-},
-{
-q:"Berapa kali perkataan 'ASK' dipaparkan?", code:`for i in range(2, 6):
-    print("ASK")`,
-opts:["3 kali","4 kali","5 kali","6 kali"],
-ans:1, exp:"range(2,6) menghasilkan 2, 3, 4, 5 — jadi gelung berlaku 4 kali."
-},
-{
-q:"Apakah output akhir bagi x?", code:`x = 1
-while x < 5:
-    x = x + 1
-print(x)`,
-opts:["4","5","6","Gelung tidak berhenti"],
-ans:1, exp:"x bertambah sehingga syarat x < 5 menjadi palsu. Apabila gelung tamat, x bernilai 5."
-},
-{
-q:"Apakah masalah utama kod ini?", code:`x = 1
-while x < 5:
-    print(x)`,
-opts:["Tiada masalah","Gelung mungkin tidak berhenti","x akan menjadi 5","print() tidak boleh digunakan dalam while"],
-ans:1, exp:"Nilai x tidak pernah berubah. Syarat x < 5 sentiasa benar, menyebabkan gelung tak terhingga."
-},
-{
-q:"Apakah output?", code:`markah = 75
-if markah >= 80:
-    print("A")
-elif markah >= 60:
-    print("B")
-else:
-    print("C")`,
-opts:["A","B","C","75"],
-ans:1, exp:"75 tidak mencapai 80 tetapi mencapai 60, maka blok elif dilaksanakan dan 'B' dipaparkan."
-},
-{
-q:"Pilih operator yang bermaksud 'tidak sama dengan' dalam Python.", code:"",
-opts:["=","==","!=","<>"],
-ans:2, exp:"Operator '!=' digunakan untuk menguji sama ada dua nilai tidak sama."
-},
-{
-q:"Apakah output?", code:`a = 4
+topic:"Urutan / asas",
+q:"Apakah output?", code:"a = 10
 b = 2
-if a > b and b > 0:
-    print("Ya")
-else:
-    print("Tidak")`,
-opts:["Ya","Tidak","True","Ralat"],
-ans:0, exp:"Kedua-dua syarat benar: 4 > 2 dan 2 > 0. Operator 'and' memerlukan kedua-duanya benar."
+print(a - b)
+print(a // b)",
+opts:["8 kemudian 5", "12 kemudian 5", "8 kemudian 2", "5 kemudian 8"],
+ans:0, exp:"10 - 2 = 8 dan 10 // 2 = 5."
 },
 {
-q:"Kod manakah paling sesuai untuk mengulang arahan tepat 5 kali?", code:"",
-opts:["if","for","else","input"],
-ans:1, exp:"Gelung for sesuai apabila bilangan ulangan diketahui, contohnya range(5)."
+topic:"Urutan / asas",
+q:"Apakah output?", code:"teks = \"ASK\"
+print(teks + \" Python\")",
+opts:["ASKPython", "ASK Python", "teks Python", "Ralat"],
+ans:1, exp:"Operator + menggabungkan dua rentetan dan terdapat satu ruang pada awal rentetan kedua."
 },
 {
-q:"Apakah output?", code:`for n in range(1, 6, 2):
-    print(n)`,
-opts:["1 2 3 4 5","1 3 5","1 3","2 4 6"],
-ans:1, exp:"range(1,6,2) bermula pada 1 dan meningkat 2 setiap kali: 1, 3, 5."
-},
-{
-q:"Apakah output?", code:`x = 10
-if x % 2 == 0:
-    print("Genap")
-else:
-    print("Ganjil")`,
-opts:["Genap","Ganjil","0","10"],
-ans:0, exp:"10 % 2 menghasilkan baki 0, jadi 10 ialah nombor genap."
-},
-{
-q:"Pilih susunan konsep yang betul.", code:`umur = int(input("Umur: "))
+topic:"Urutan / asas",
+q:"Pilih susunan konsep yang betul.", code:"umur = int(input(\"Umur: \"))
 if umur >= 13:
-    print("Remaja")`,
-opts:[
-"Input → pilihan → output",
-"Output → input → gelung",
-"Gelung → input → pilihan",
-"Pilihan → output → input"
-],
+    print(\"Remaja\")",
+opts:["Input → pilihan → output", "Output → input → gelung", "Gelung → input → pilihan", "Pilihan → output → input"],
 ans:0, exp:"Program menerima input, membuat pilihan menggunakan if, kemudian menghasilkan output."
 },
 {
-q:"Apakah nilai jumlah selepas gelung tamat?", code:`jumlah = 0
+topic:"if / else",
+q:"Nilai x ialah 8. Apakah output?", code:"x = 8
+if x > 5:
+    print(\"A\")
+else:
+    print(\"B\")",
+opts:["A", "B", "8", "Ralat"],
+ans:0, exp:"8 lebih besar daripada 5, jadi blok if dilaksanakan."
+},
+{
+topic:"if / else",
+q:"Kod manakah yang betul untuk memaparkan 'Lulus' jika markah sekurang-kurangnya 40?", code:"",
+opts:["if markah >= 40:
+    print(\"Lulus\")", "if markah > 40
+    print(\"Lulus\")", "if markah = 40:
+    print(\"Lulus\")", "if markah <= 40:
+    print(\"Lulus\")"],
+ans:0, exp:">=' bermaksud lebih besar atau sama dengan, dan tanda ':' wajib selepas syarat."
+},
+{
+topic:"if / elif / else",
+q:"Apakah output?", code:"markah = 75
+if markah >= 80:
+    print(\"A\")
+elif markah >= 60:
+    print(\"B\")
+else:
+    print(\"C\")",
+opts:["A", "B", "C", "75"],
+ans:1, exp:"75 tidak mencapai 80 tetapi mencapai 60, jadi blok elif dilaksanakan."
+},
+{
+topic:"if / else",
+q:"Apakah output?", code:"umur = 12
+if umur >= 13:
+    print(\"Remaja\")
+else:
+    print(\"Kanak-kanak\")",
+opts:["Remaja", "Kanak-kanak", "12", "Ralat"],
+ans:1, exp:"12 kurang daripada 13, jadi blok else dilaksanakan."
+},
+{
+topic:"if / elif / else",
+q:"Apakah output?", code:"suhu = 30
+if suhu > 35:
+    print(\"Panas\")
+elif suhu >= 25:
+    print(\"Sederhana\")
+else:
+    print(\"Sejuk\")",
+opts:["Panas", "Sederhana", "Sejuk", "30"],
+ans:1, exp:"30 tidak melebihi 35 tetapi sekurang-kurangnya 25."
+},
+{
+topic:"if / else",
+q:"Kod manakah memaparkan 'Positif' hanya jika nombor lebih besar daripada 0?", code:"",
+opts:["if nombor > 0:
+    print(\"Positif\")", "if nombor >= 0:
+    print(\"Positif\")", "if nombor < 0:
+    print(\"Positif\")", "if nombor == 0:
+    print(\"Positif\")"],
+ans:0, exp:"Syarat nombor > 0 hanya benar untuk nombor positif."
+},
+{
+topic:"if / else",
+q:"Apakah output?", code:"x = 5
+if x == 5:
+    print(\"Sama\")
+else:
+    print(\"Tidak sama\")",
+opts:["Sama", "Tidak sama", "5", "Ralat"],
+ans:0, exp:"x sama dengan 5, jadi syarat x == 5 adalah benar."
+},
+{
+topic:"if / elif / else",
+q:"Apakah output?", code:"gred = 55
+if gred >= 80:
+    print(\"Cemerlang\")
+elif gred >= 50:
+    print(\"Lulus\")
+else:
+    print(\"Gagal\")",
+opts:["Cemerlang", "Lulus", "Gagal", "55"],
+ans:1, exp:"55 memenuhi syarat gred >= 50."
+},
+{
+topic:"if / else",
+q:"Apakah yang berlaku jika syarat if adalah palsu dan tiada else?", code:"x = 2
+if x > 5:
+    print(\"Besar\")
+print(\"Tamat\")",
+opts:["Besar sahaja", "Tamat sahaja", "Besar dan Tamat", "Tiada output"],
+ans:1, exp:"Blok if dilangkau, kemudian print('Tamat') tetap dijalankan."
+},
+{
+topic:"if / else",
+q:"Apakah output?", code:"n = 9
+if n % 3 == 0:
+    print(\"Boleh dibahagi 3\")
+else:
+    print(\"Tidak\")",
+opts:["Boleh dibahagi 3", "Tidak", "9", "Ralat"],
+ans:0, exp:"9 % 3 menghasilkan baki 0."
+},
+{
+topic:"for",
+q:"Apakah output?", code:"for i in range(3):
+    print(i)",
+opts:["0 1 2", "1 2 3", "0 1 2 3", "3 sahaja"],
+ans:0, exp:"range(3) menghasilkan 0, 1 dan 2."
+},
+{
+topic:"for",
+q:"Berapa kali perkataan 'ASK' dipaparkan?", code:"for i in range(2, 6):
+    print(\"ASK\")",
+opts:["3 kali", "4 kali", "5 kali", "6 kali"],
+ans:1, exp:"range(2,6) menghasilkan 2, 3, 4, 5 iaitu 4 ulangan."
+},
+{
+topic:"for",
+q:"Kod manakah paling sesuai untuk mengulang arahan tepat 5 kali?", code:"",
+opts:["if", "for", "else", "input"],
+ans:1, exp:"Gelung for sesuai apabila bilangan ulangan diketahui."
+},
+{
+topic:"for",
+q:"Apakah output?", code:"for n in range(1, 6, 2):
+    print(n)",
+opts:["1 2 3 4 5", "1 3 5", "1 3", "2 4 6"],
+ans:1, exp:"range(1,6,2) menghasilkan 1, 3, 5."
+},
+{
+topic:"for",
+q:"Apakah nilai jumlah selepas gelung tamat?", code:"jumlah = 0
 for i in range(1, 4):
     jumlah = jumlah + i
-print(jumlah)`,
-opts:["3","4","6","10"],
+print(jumlah)",
+opts:["3", "4", "6", "10"],
 ans:2, exp:"Nilai yang ditambah ialah 1 + 2 + 3 = 6."
 },
 {
+topic:"for",
+q:"Apakah output?", code:"for i in range(5, 2, -1):
+    print(i)",
+opts:["5 4 3", "5 4 3 2", "2 3 4 5", "5 3"],
+ans:0, exp:"Gelung bermula pada 5 dan berkurang 1 sehingga sebelum 2."
+},
+{
+topic:"for",
+q:"Berapa kali nilai i berubah dalam gelung ini?", code:"for i in range(4):
+    print(\"Hai\")",
+opts:["3 kali", "4 kali", "5 kali", "Tidak berubah"],
+ans:1, exp:"range(4) mempunyai empat nilai: 0, 1, 2, 3."
+},
+{
+topic:"for",
+q:"Apakah output akhir?", code:"jumlah = 0
+for i in range(2, 5):
+    jumlah += i
+print(jumlah)",
+opts:["7", "9", "11", "14"],
+ans:1, exp:"2 + 3 + 4 = 9."
+},
+{
+topic:"while",
+q:"Apakah output akhir bagi x?", code:"x = 1
+while x < 5:
+    x = x + 1
+print(x)",
+opts:["4", "5", "6", "Gelung tidak berhenti"],
+ans:1, exp:"x bertambah sehingga syarat x < 5 menjadi palsu; nilai akhirnya 5."
+},
+{
+topic:"while",
+q:"Apakah masalah utama kod ini?", code:"x = 1
+while x < 5:
+    print(x)",
+opts:["Tiada masalah", "Gelung mungkin tidak berhenti", "x akan menjadi 5", "print() tidak boleh digunakan dalam while"],
+ans:1, exp:"Nilai x tidak berubah, jadi syarat sentiasa benar."
+},
+{
+topic:"while",
+q:"Berapa kali 'Hai' dipaparkan?", code:"x = 0
+while x < 3:
+    print(\"Hai\")
+    x += 1",
+opts:["2 kali", "3 kali", "4 kali", "Tak terhingga"],
+ans:1, exp:"x mengambil nilai 0, 1 dan 2 sebelum gelung tamat."
+},
+{
+topic:"while",
+q:"Apakah output akhir?", code:"n = 5
+while n > 2:
+    n -= 1
+print(n)",
+opts:["1", "2", "3", "5"],
+ans:1, exp:"n berkurang 5→4→3→2; apabila n=2 syarat n>2 menjadi palsu."
+},
+{
+topic:"while",
+q:"Apakah yang perlu ada supaya kebanyakan gelung while berhenti?", code:"",
+opts:["Perubahan pada pemboleh ubah kawalan", "Lebih banyak print()", "Satu lagi if sahaja", "Nama pemboleh ubah mesti x"],
+ans:0, exp:"Pemboleh ubah kawalan biasanya perlu berubah supaya syarat akhirnya menjadi palsu."
+},
+{
+topic:"while",
+q:"Apakah output?", code:"x = 2
+while x <= 6:
+    print(x)
+    x += 2",
+opts:["2 4 6", "2 4 6 8", "4 6", "2 3 4 5 6"],
+ans:0, exp:"x meningkat 2 setiap kali: 2, 4, 6."
+},
+{
+topic:"Operator",
+q:"Pilih operator yang bermaksud 'tidak sama dengan' dalam Python.", code:"",
+opts:["=", "==", "!=", "<>"],
+ans:2, exp:"Operator != digunakan untuk menguji sama ada dua nilai tidak sama."
+},
+{
+topic:"Operator",
+q:"Apakah output?", code:"a = 4
+b = 2
+if a > b and b > 0:
+    print(\"Ya\")
+else:
+    print(\"Tidak\")",
+opts:["Ya", "Tidak", "True", "Ralat"],
+ans:0, exp:"Kedua-dua syarat benar, jadi 'Ya' dipaparkan."
+},
+{
+topic:"Operator",
+q:"Apakah output?", code:"x = 10
+if x % 2 == 0:
+    print(\"Genap\")
+else:
+    print(\"Ganjil\")",
+opts:["Genap", "Ganjil", "0", "10"],
+ans:0, exp:"10 % 2 menghasilkan baki 0."
+},
+{
+topic:"Operator",
 q:"Kod manakah menghasilkan 'Betul' hanya apabila x sama dengan 7?", code:"",
-opts:[
-`if x = 7:\n    print("Betul")`,
-`if x == 7:\n    print("Betul")`,
-`if x != 7:\n    print("Betul")`,
-`if x >= 7:\n    print("Betul")`
-],
-ans:1, exp:"Dalam syarat, '==' digunakan untuk membandingkan kesamaan. '=' digunakan untuk memberi nilai kepada pemboleh ubah."
+opts:["if x = 7:
+    print(\"Betul\")", "if x == 7:
+    print(\"Betul\")", "if x != 7:
+    print(\"Betul\")", "if x >= 7:
+    print(\"Betul\")"],
+ans:1, exp:"Operator == digunakan untuk perbandingan kesamaan."
+},
+{
+topic:"Operator",
+q:"Apakah nilai bagi 17 % 5?", code:"",
+opts:["2", "3", "4", "5"],
+ans:0, exp:"17 dibahagi 5 berbaki 2."
+},
+{
+topic:"Operator",
+q:"Apakah maksud operator // dalam Python?", code:"",
+opts:["Bahagi biasa", "Bahagi integer", "Baki bahagi", "Darab"],
+ans:1, exp:"// ialah pembahagian integer."
+},
+{
+topic:"Operator",
+q:"Apakah hasil syarat ini?", code:"x = 6
+print(x > 3 and x < 10)",
+opts:["True", "False", "6", "Ralat"],
+ans:0, exp:"6 lebih besar daripada 3 dan kurang daripada 10."
+},
+{
+topic:"Operator",
+q:"Apakah hasil syarat ini?", code:"x = 2
+print(x > 5 or x == 2)",
+opts:["True", "False", "2", "Ralat"],
+ans:0, exp:"Salah satu syarat benar, jadi operator or menghasilkan True."
+},
+{
+topic:"Operator",
+q:"Apakah hasil 3 ** 2?", code:"",
+opts:["5", "6", "8", "9"],
+ans:3, exp:"Operator ** ialah kuasa; 3 kuasa 2 ialah 9."
+},
+{
+topic:"Operator",
+q:"Apakah output?", code:"a = 8
+b = 3
+print(a // b)
+print(a % b)",
+opts:["2 kemudian 2", "2 kemudian 3", "3 kemudian 2", "8 kemudian 3"],
+ans:0, exp:"8 // 3 = 2 dan 8 % 3 = 2."
 }
 ];
 
@@ -343,7 +556,21 @@ function startGame(){
     alert("Sila isi nama penuh dan kelas sebelum memulakan game.");
     return;
   }
-  questions=shuffle(bank).slice(0,10);
+  // Pilih 10 soalan secara seimbang mengikut kategori utama
+  const groups = {
+    asas: shuffle(bank.filter(q => q.topic === "Urutan / asas")),
+    pilihan: shuffle(bank.filter(q => q.topic === "if / else" || q.topic === "if / elif / else")),
+    forLoop: shuffle(bank.filter(q => q.topic === "for")),
+    whileLoop: shuffle(bank.filter(q => q.topic === "while")),
+    operator: shuffle(bank.filter(q => q.topic === "Operator"))
+  };
+  questions = shuffle([
+    ...groups.asas.slice(0,2),
+    ...groups.pilihan.slice(0,2),
+    ...groups.forLoop.slice(0,2),
+    ...groups.whileLoop.slice(0,2),
+    ...groups.operator.slice(0,2)
+  ]);
   idx=0; score=0; streak=0; locked=false; mistakes=[]; resultSent=false;
   document.getElementById("sendStatus").classList.add("hidden");
   document.getElementById("start").classList.add("hidden");
